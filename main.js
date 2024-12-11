@@ -1,4 +1,4 @@
-boardSquaresArray =[];
+boardSquaresArray = [];
 let legalSquares = [];
 let isWhiteTurn = true;
 const boardSquares = document.getElementsByClassName("square");
@@ -38,11 +38,11 @@ function fillBoardSquaresArray() {
     }
 }
 
-function updateBoardSquares(currentSquareId, destinationsSquareId, boardSquaresId) {
+function updateBoardSquaresArray(currentSquareId, destinationSquareId, boardSquaresId) {
     let currentSquare = boardSquaresArray.find(
         (element) => element.squareId === currentSquareId
     );
-    let destinationSquareId = boardSquaresArray.find(
+    let destinationSquareElement = boardSquaresArray.find(
         (element) => element.squareId === destinationSquareId
     );
     let pieceColor = currentSquare.pieceColor;
@@ -95,8 +95,8 @@ function drag(ev) {
             pieceType: pieceType,
             pieceId: pieceId
         }
-        let legalSquares = getPossibleMoves(startingSquareId, piece, boardSquaresArray);
-        return legalSquaresJson = JSON.stringify(legalSquares);
+        let legalSquares = getPossibleMoves(startingSquareId, pieceObject, boardSquaresArray);
+        let legalSquaresJson = JSON.stringify(legalSquares);
         ev.dataTransfer.setData("application/json", legalSquaresJson);
     }
 }
@@ -146,8 +146,8 @@ function getPossibleMoves(startingSquareId, piece, boardSquaresArray) {
         return legalSquares;
     }
     if (pieceType == "knight") {
-    let legalSquares = getKnightMoves(startingSquareId, pieceColor, boardSquaresArray);
-    return legalSquares;
+        let legalSquares = getKnightMoves(startingSquareId, pieceColor, boardSquaresArray);
+        return legalSquares;
     }
     if (pieceType == "rook") {
         let legalSquares = getRookMoves(startingSquareId, pieceColor, boardSquaresArray);
@@ -196,6 +196,7 @@ function checkPawnDiagonalCaptures(startingSquareId, pieceColor, boardSquaresArr
     let legalSquares = [];
     const direction = (pieceColor == "white" ? 1 : -1);
 
+
     currentRank += direction;
     for (let i = -1; i <= 1; i += 2) {
         currentFile = String.fromCharCode(file.charCodeAt(0) + i);
@@ -228,7 +229,7 @@ function checkPawnForwardMoves(startingSquareId, pieceColor, boardSquaresArray) 
     if (squareContent != "blank")
         return legalSquares;
     legalSquares.push(currentSquareId);
-    if (!((rankNumber == 2 && pieceColor=="white" ) || (rankNumber ==7 && pieceColor=="black")) )
+    if (!((rankNumber == 2 && pieceColor == "white") || (rankNumber == 7 && pieceColor == "black")))
         return legalSquares;
     currentRank += direction;
     currentSquareId = currentFile + currentRank;
@@ -508,7 +509,7 @@ function moveToFirstRankAFile(startingSquareId, pieceColor) {
     return legalSquares;
 }
 
-function isKingInCheck(squareId, pieceColor, boardSquaresaArray) {
+function isKingInCheck(squareId, pieceColor, boardSquaresArray) {
     let legalSquares = getRookMoves(squareId, pieceColor, boardSquaresArray);
     for (let squareId of legalSquares) {
         let pieceProperties = getPieceAtSquare(squareId, boardSquaresArray);
